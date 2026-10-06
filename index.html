@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aula Conectada</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --hf:'Montserrat','Segoe UI',system-ui,-apple-system,Arial,sans-serif;
+  --bf:'Source Sans 3','Segoe UI',system-ui,-apple-system,Arial,sans-serif;
+  --navy:#03253A;
+  --navy2:#0B3552;
+  --orange:#F7941D;
+  --bg:#FFFFFF;
+  --surface:#FFFFFF;
+  --ink:#1E2B3A;
+  --head:#14245C;
+  --muted:#586A7C;
+  --line:#D8E1EA;
+  --tint:#E8EFF6;
+  --ph:#FFF0DA;
+  --phline:#E9A24F;
+  --chip-on:#03253A;
+  --ring:#03253A;
+  --link:#A65A00;
+  color-scheme:light;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.65 var(--bf)}
+a{color:var(--link)}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* Barra superior */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--navy)}
+.bar{max-width:1320px;margin:0 auto;padding:0 20px;min-height:62px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{color:#fff;text-decoration:none;font:800 19px/1.1 var(--hf);letter-spacing:-.01em}
+.brand small{display:block;margin-top:2px;font:500 11.5px/1.2 var(--hf);letter-spacing:0;color:#A9C4DA}
+.menu-btn{padding:8px 16px;border:2px solid #3F6482;border-radius:6px;background:transparent;color:#fff;font:600 14px var(--hf);cursor:pointer}
+#nav{display:none;position:absolute;left:0;right:0;top:100%;padding:4px 20px 14px;background:var(--navy);border-bottom:3px solid var(--orange)}
+.top.open #nav{display:block}
+#nav ul{list-style:none;margin:0;padding:0}
+#nav a{display:block;padding:12px 6px;border-bottom:1px solid rgba(255,255,255,.09);color:#DCE8F2;text-decoration:none;font:600 15px var(--hf)}
+#nav a[aria-current="page"]{color:var(--orange)}
+#nav li{margin:0;text-align:left;-webkit-hyphens:manual;hyphens:manual}
+#nav a{white-space:nowrap;-webkit-hyphens:manual;hyphens:manual;text-align:left}
+#nav .short{display:none}
+.brand{flex:none;-webkit-hyphens:manual;hyphens:manual}
+@media (min-width:1100px){
+  .menu-btn{display:none}
+  #nav{display:block;position:static;padding:0;border:0;background:none}
+  #nav ul{display:flex;gap:2px;flex-wrap:nowrap}
+  #nav a{padding:23px 11px 20px;border:0;border-bottom:3px solid transparent;font-size:14px}
+  #nav a:hover{color:#fff}
+  #nav a[aria-current="page"]{border-bottom-color:var(--orange)}
+  #nav .full{display:none}
+  #nav .short{display:inline}
+}
+@media (min-width:1100px) and (max-width:1239px){
+  .brand small{display:none}
+}
+
+/* Texto */
+p,li{text-align:justify;-webkit-hyphens:auto;hyphens:auto}
+p{margin:0 0 12px}
+h3,h4{font-family:var(--hf);color:var(--head);margin:0 0 8px;line-height:1.25}
+h3{font-size:19px;font-weight:700}
+h4{font-size:16.5px;font-weight:700}
+ul{margin:0 0 12px;padding-left:20px}
+li{margin-bottom:4px}
+.left{text-align:left;-webkit-hyphens:manual;hyphens:manual}
+.center{text-align:center}
+
+.page[hidden]{display:none}
+.page>.wrap{padding-block:26px 40px}
+.page-head{margin:0 0 22px;text-align:center}
+.kick{margin:0 0 2px;text-align:center;font:700 14px var(--hf);color:var(--link)}
+.page-head h2{margin:0;font:800 clamp(26px,4vw,38px)/1.12 var(--hf);letter-spacing:-.015em;color:var(--head)}
+.page-head h2::after{content:"";display:block;width:56px;height:4px;margin:12px auto 0;background:var(--orange)}
+.st{margin:32px 0 14px;text-align:center;font:800 22px/1.2 var(--hf);color:var(--head)}
+.st::after{content:"";display:block;width:44px;height:3px;margin:8px auto 0;background:var(--orange)}
+.note{margin:-6px 0 14px;text-align:center;color:var(--muted);font-size:15.5px}
+.ph{background:var(--ph);border-bottom:2px dotted var(--phline);padding:0 3px;border-radius:2px}
+
+/* Botón */
+.btn{display:inline-flex;align-items:center;gap:10px;padding:13px 22px;border:0;border-radius:6px;background:var(--orange);color:#03253A;font:700 15.5px/1.1 var(--hf);text-decoration:none;cursor:pointer;transition:background .15s}
+.btn:hover{background:#FFAB45}
+.btn svg{width:17px;height:17px;flex:none}
+.btn.ghost{background:transparent;border:2px solid var(--line);color:var(--head);padding:11px 18px;font-size:14px}
+.btn.ghost:hover{background:var(--tint)}
+
+/* Banner */
+.banner{position:relative;color:#fff;background:linear-gradient(120deg,#03253A 0%,#073452 55%,#0B4A73 100%);border-bottom:5px solid var(--orange)}
+.banner-in{max-width:1120px;margin:0 auto;padding:30px 20px 56px;display:grid;gap:12px;align-items:center}
+@media (min-width:820px){.banner-in{grid-template-columns:minmax(0,1fr) minmax(0,1fr);padding:36px 20px 58px}}
+.slides{display:grid}
+.slide{grid-area:1/1;align-self:center;visibility:hidden;opacity:0;transition:opacity .35s}
+.slide.on{visibility:visible;opacity:1}
+.hello{margin:0 0 4px;text-align:left;font:500 clamp(20px,3vw,28px)/1.2 var(--hf);color:#CFE3F3}
+.banner h1{margin:0;text-align:left;font:800 clamp(36px,6vw,62px)/1.02 var(--hf);letter-spacing:-.02em;text-transform:uppercase}
+.banner h2.slide-title{margin:0 0 12px;text-align:left;font:800 clamp(28px,4.4vw,42px)/1.1 var(--hf);color:#fff}
+.bline{width:64px;height:4px;margin:16px 0;background:var(--orange)}
+.lead{max-width:44ch;margin:0 0 8px;text-align:left;-webkit-hyphens:manual;hyphens:manual;font-size:19px;line-height:1.45;color:#D6E4F0}
+.author{margin:0;text-align:left;font:600 15px/1.4 var(--hf);color:#fff}
+.slide p.txt{color:#D6E4F0;font-size:18px;line-height:1.55;margin:0 0 10px}
+.banner .ph{background:rgba(247,148,29,.24);border-bottom-color:#F9C98E}
+.art{display:block;width:100%;height:auto;max-height:300px;margin:0 auto}
+.dots{position:absolute;left:0;right:0;bottom:18px;display:flex;justify-content:center;gap:10px}
+.dot{width:11px;height:11px;padding:0;border:0;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer}
+.dot.on{background:var(--orange)}
+
+/* Presentación en Inicio */
+.intro-card{max-width:860px;margin:0 auto;padding:22px;display:grid;gap:20px;justify-items:center;text-align:center;background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:0 1px 3px rgba(3,37,58,.08)}
+@media (min-width:700px){.intro-card{grid-template-columns:auto minmax(0,1fr);justify-items:stretch;text-align:left;align-items:center;gap:28px}}
+.avatar{object-position:50% 28%;display:block;width:190px;height:190px;aspect-ratio:1/1;border-radius:50%;object-fit:cover;border:5px solid var(--ring);background:var(--tint)}
+.name{margin:0 0 8px;font:800 26px/1.15 var(--hf);color:var(--head)}
+.intro-card p{margin-bottom:14px}
+
+/* Tarjetas de temas */
+.cards{display:grid;gap:18px;grid-template-columns:1fr}
+@media (min-width:620px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:920px){.cards{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.card{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:8px;overflow:hidden;color:inherit;text-decoration:none;box-shadow:0 1px 3px rgba(3,37,58,.08);transition:border-color .15s}
+.card:hover{border-color:var(--orange)}
+.card-top{aspect-ratio:21/9;background:#EAF2FA;border-bottom:4px solid var(--orange);overflow:hidden}
+.card-top svg{display:block;width:100%;height:100%}
+.card-body{padding:14px 16px 16px;display:flex;flex-direction:column;flex:1}
+.card-body h4{font-size:17px}
+.card-body p{font-size:15.5px;line-height:1.55;margin-bottom:10px}
+.more{margin-top:auto;font:700 14px var(--hf);color:var(--link)}
+
+/* Distribución simétrica */
+.grid2,.grid3,.swot{display:grid;gap:18px}
+@media (min-width:760px){.grid2,.swot{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:860px){.grid3{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.panel{padding:16px 18px 8px;background:var(--surface);border:1px solid var(--line);border-top:5px solid var(--c,var(--orange));border-radius:6px}
+.panel.pro,.sw.f{--c:#2E9E6B}
+.panel.con,.sw.a{--c:#C0453A}
+.panel.blue,.sw.o{--c:#2F80C8}
+.sw.d{--c:#E07B12}
+.sw{padding:14px 18px 8px;background:var(--surface);border:1px solid var(--line);border-top:5px solid var(--c);border-radius:6px}
+.sw ul{margin-bottom:6px}
+.who{display:grid;justify-items:center;text-align:center;gap:6px;margin-bottom:22px}
+.who .role{margin:0;text-align:center;color:var(--muted)}
+.who .name{margin:6px 0 0}
+.prose{max-width:820px;margin:0 auto}
+.narrow{max-width:720px;margin:0 auto}
+
+/* Tablas */
+.tbl{overflow-x:auto;background:var(--surface)}
+table{width:100%;min-width:600px;border-collapse:collapse;font:400 15px/1.5 var(--bf)}
+th,td{padding:10px 12px;text-align:left;vertical-align:top;border:1px solid #B3C5D6}
+thead th{background:var(--navy);color:#fff;font:700 14px var(--hf);border-color:#1E4A6A}
+tbody th{width:24%;background:var(--tint);color:var(--head);font-weight:700}
+
+/* Espacios para recursos */
+.slot{display:grid;place-items:center;aspect-ratio:16/9;padding:14px;border:2px dashed var(--phline);border-radius:6px;background:var(--ph);text-align:center;font:600 14px/1.4 var(--hf);color:var(--muted)}
+.slot span{max-width:32ch}
+
+/* Línea de tiempo */
+.tl-tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:12px}
+.tl-tabs button{padding:9px 16px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--head);font:700 14px var(--hf);cursor:pointer}
+.tl-tabs button[aria-selected="true"]{background:var(--chip-on);border-color:var(--chip-on);color:#fff;box-shadow:inset 0 -3px 0 var(--orange)}
+.tl-panel{max-width:820px;margin:0 auto;padding:16px 20px 8px;background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--orange);border-radius:6px}
+.tl-panel[hidden]{display:none}
+
+/* Cuestionario */
+.quiz{max-width:720px;margin:0 auto;padding:18px;background:var(--surface);border:1px solid var(--line);border-top:5px solid #2F80C8;border-radius:6px}
+.q-n{margin:0 0 4px;text-align:left;font:600 13px var(--hf);color:var(--muted)}
+.q-t{margin:0 0 12px;text-align:left;font:700 18px/1.35 var(--hf);color:var(--head)}
+.q-o{display:grid;gap:8px}
+.q-opt{padding:11px 14px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);text-align:left;font:500 15.5px/1.4 var(--bf);cursor:pointer}
+.q-opt:hover:not(:disabled){border-color:var(--orange)}
+.q-opt.ok{border-color:#2E9E6B;background:rgba(46,158,107,.16)}
+.q-opt.bad{border-color:#C0453A;background:rgba(192,69,58,.14)}
+.q-fb{margin:12px 0 10px;text-align:left;font:500 15px/1.5 var(--bf)}
+.q-end{margin:0 0 12px;text-align:left;font:700 20px var(--hf);color:var(--head)}
+
+/* Pie de página */
+.pager{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;margin-top:32px;padding-top:16px;border-top:1px solid var(--line)}
+.refs li{text-align:left;-webkit-hyphens:manual;hyphens:manual}
+footer{background:var(--navy);color:#C9D9E7;text-align:center;font:500 14px/1.6 var(--hf)}
+footer .stripe{height:8px;background:linear-gradient(90deg,#1B2E45 0 50%,#F7941D 50% 100%)}
+footer p{margin:0;padding:16px 20px calc(16px + env(safe-area-inset-bottom,0px));text-align:center}
+
+
+/* Infografías y recursos gráficos */
+.ig{display:block;width:100%;height:auto;max-width:460px;margin:0 auto}
+.ig-line line{stroke:var(--line);stroke-width:2}
+.ig-box{fill:var(--surface);stroke:var(--orange);stroke-width:2}
+.ig-core{fill:var(--navy)}
+.ig-ct{fill:#fff;font:800 22px var(--hf);text-anchor:middle}
+.ig-t{fill:var(--head);font:700 13.5px var(--hf);text-anchor:middle}
+.flow{display:grid;gap:12px;margin-top:6px}
+@media (min-width:760px){.flow{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.step{padding:14px 16px 6px;background:var(--surface);border:1px solid var(--line);border-top:5px solid var(--orange);border-radius:6px}
+.step .tag{display:inline-block;margin-bottom:6px;padding:2px 12px;border-radius:999px;background:var(--navy);color:#fff;font:700 12.5px var(--hf)}
+.scale{display:grid;gap:10px;grid-template-columns:repeat(2,minmax(0,1fr));margin-top:6px}
+@media (min-width:760px){.scale{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.scale div{padding:10px 12px;text-align:center;background:var(--surface);border:1px solid var(--line);border-bottom:5px solid var(--orange);border-radius:6px;font:700 14px var(--hf);color:var(--head)}
+.scale-bar{height:8px;border-radius:4px;background:linear-gradient(90deg,#9CC7EA,#03253A);margin:12px 0 4px}
+.scale-lbl{display:flex;justify-content:space-between;gap:10px;font:600 13px var(--hf);color:var(--muted)}
+.fig-cap{margin:8px 0 0;text-align:center;font:600 13px var(--hf);color:var(--muted)}
+
+
+/* Ilustraciones */
+.illus{margin:0 auto 24px;max-width:640px}
+.illus svg{display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--line)}
+.illus figcaption{margin-top:8px;text-align:center;font:600 13px var(--hf);color:var(--muted)}
+.s-bg{fill:#EAF2FA}.s-floor{fill:#D9E7F3}.s-navy{fill:#03253A}.s-navy2{fill:#0B3552}
+.s-blue{fill:#2F80C8}.s-lblue{fill:#BFE0F7}.s-pale{fill:#E8F1F9}.s-or{fill:#F7941D}
+.s-ord{fill:#D97A06}.s-wh{fill:#fff}.s-skin{fill:#F2C9A5}
+.s-ln2{fill:none;stroke:#F7941D;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.s-arm{stroke:#F7941D;stroke-width:12;stroke-linecap:round;fill:none}
+.s-lk{stroke:#2F80C8;stroke-width:2.5;fill:none}
+.s-dash{stroke:#B8CDE0;stroke-width:2;stroke-dasharray:6 6;fill:none}
+.s-tile{fill:#fff;stroke:#BFD3E6;stroke-width:2}
+.s-win{fill:#fff;stroke:#BFD3E6;stroke-width:2}
+.s-bar{fill:#D3E3F1}
+.il-t{fill:#14245C;font:700 14px 'Montserrat','Segoe UI',Arial,sans-serif;text-anchor:middle}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+<defs>
+
+<symbol id="il-hist" viewBox="0 0 480 200">
+  <rect width="480" height="200" class="s-bg"/><rect y="152" width="480" height="48" class="s-floor"/>
+  <rect x="22" y="62" width="76" height="90" rx="4" class="s-navy2"/>
+  <circle cx="46" cy="110" r="15" class="s-pale"/><circle cx="74" cy="110" r="15" class="s-pale"/>
+  <circle cx="46" cy="110" r="5" class="s-navy"/><circle cx="74" cy="110" r="5" class="s-navy"/>
+  <circle cx="36" cy="77" r="3.5" class="s-or"/><circle cx="48" cy="77" r="3.5" class="s-or"/><circle cx="60" cy="77" r="3.5" class="s-lblue"/>
+  <rect x="140" y="64" width="80" height="62" rx="5" class="s-navy"/><rect x="147" y="71" width="66" height="48" rx="2" class="s-lblue"/>
+  <rect x="174" y="126" width="12" height="10" class="s-navy"/><rect x="158" y="136" width="44" height="6" rx="3" class="s-navy"/>
+  <rect x="146" y="144" width="68" height="8" rx="2" class="s-navy2"/>
+  <rect x="262" y="78" width="76" height="52" rx="4" class="s-navy"/><rect x="267" y="83" width="66" height="42" rx="2" class="s-lblue"/>
+  <path d="M250 133h100l-8 14H258z" class="s-navy2"/>
+  <rect x="398" y="58" width="44" height="90" rx="8" class="s-navy"/><rect x="403" y="68" width="34" height="64" rx="3" class="s-lblue"/><circle cx="420" cy="100" r="8" class="s-or"/>
+  <path class="s-ln2" d="M113 96l10 9-10 9M229 96l10 9-10 9M368 96l10 9-10 9"/>
+  <text x="60" y="182" class="il-t">1950</text><text x="180" y="182" class="il-t">1980</text><text x="300" y="182" class="il-t">2000</text><text x="420" y="182" class="il-t">2020</text>
+</symbol>
+
+<symbol id="il-comp" viewBox="0 0 480 200">
+  <rect width="480" height="200" class="s-bg"/><rect y="170" width="480" height="30" class="s-floor"/>
+  <rect x="250" y="26" width="200" height="124" rx="8" class="s-navy"/><rect x="258" y="34" width="184" height="108" rx="4" class="s-wh"/>
+  <rect x="276" y="96" width="24" height="36" class="s-blue"/><rect x="308" y="76" width="24" height="56" class="s-lblue"/>
+  <rect x="340" y="56" width="24" height="76" class="s-or"/><rect x="372" y="86" width="24" height="46" class="s-blue"/>
+  <rect x="268" y="134" width="164" height="3" class="s-navy2"/>
+  <rect x="342" y="150" width="16" height="14" class="s-navy"/><rect x="316" y="164" width="68" height="6" rx="3" class="s-navy"/>
+  <rect x="108" y="150" width="18" height="22" class="s-navy2"/><rect x="134" y="150" width="18" height="22" class="s-navy2"/>
+  <rect x="100" y="94" width="60" height="64" rx="16" class="s-or"/>
+  <line x1="104" y1="110" x2="94" y2="146" class="s-arm"/><circle cx="93" cy="151" r="6" class="s-skin"/>
+  <line x1="156" y1="112" x2="236" y2="92" class="s-arm"/><circle cx="240" cy="91" r="7" class="s-skin"/>
+  <circle cx="130" cy="70" r="22" class="s-skin"/><path d="M108 68a22 22 0 0 1 44 0c-8-9-36-9-44 0z" class="s-navy"/>
+</symbol>
+
+<symbol id="il-teor" viewBox="0 0 480 200">
+  <rect width="480" height="200" class="s-bg"/>
+  <line x1="240" y1="24" x2="240" y2="172" class="s-dash"/>
+  <rect x="62" y="122" width="40" height="40" class="s-blue"/><rect x="106" y="122" width="40" height="40" class="s-blue"/><rect x="150" y="122" width="40" height="40" class="s-lblue"/>
+  <rect x="84" y="78" width="40" height="40" class="s-or"/><rect x="128" y="78" width="40" height="40" class="s-blue"/>
+  <rect x="106" y="34" width="40" height="40" class="s-navy2"/>
+  <g class="s-lk"><line x1="360" y1="95" x2="330" y2="48"/><line x1="360" y1="95" x2="410" y2="50"/><line x1="360" y1="95" x2="445" y2="105"/><line x1="360" y1="95" x2="395" y2="148"/><line x1="360" y1="95" x2="318" y2="140"/><line x1="360" y1="95" x2="275" y2="90"/><line x1="410" y1="50" x2="445" y2="105"/><line x1="395" y1="148" x2="318" y2="140"/></g>
+  <circle cx="330" cy="48" r="11" class="s-or"/><circle cx="410" cy="50" r="9" class="s-blue"/><circle cx="445" cy="105" r="11" class="s-navy2"/>
+  <circle cx="395" cy="148" r="12" class="s-blue"/><circle cx="318" cy="140" r="9" class="s-navy2"/><circle cx="275" cy="90" r="10" class="s-blue"/>
+  <circle cx="360" cy="95" r="18" class="s-navy"/><circle cx="360" cy="95" r="6" class="s-or"/>
+  <text x="127" y="188" class="il-t">Construir</text><text x="360" y="188" class="il-t">Conectar</text>
+</symbol>
+
+<symbol id="il-form" viewBox="0 0 480 200">
+  <rect width="480" height="200" class="s-bg"/>
+  <rect x="8" y="20" width="104" height="124" rx="10" class="s-tile"/><rect x="128" y="20" width="104" height="124" rx="10" class="s-tile"/>
+  <rect x="248" y="20" width="104" height="124" rx="10" class="s-tile"/><rect x="368" y="20" width="104" height="124" rx="10" class="s-tile"/>
+  <polygon points="24,76 60,48 96,76" class="s-or"/><rect x="30" y="76" width="60" height="46" class="s-navy2"/>
+  <rect x="53" y="94" width="14" height="28" class="s-lblue"/><rect x="36" y="84" width="12" height="12" class="s-lblue"/><rect x="72" y="84" width="12" height="12" class="s-lblue"/>
+  <rect x="144" y="62" width="34" height="50" rx="3" class="s-blue"/><rect x="182" y="62" width="34" height="50" rx="3" class="s-lblue"/>
+  <rect x="188" y="72" width="22" height="4" class="s-blue"/><rect x="188" y="82" width="22" height="4" class="s-blue"/><rect x="188" y="92" width="16" height="4" class="s-blue"/>
+  <circle cx="161" cy="87" r="8" class="s-or"/>
+  <rect x="262" y="60" width="76" height="50" rx="4" class="s-navy"/>
+  <rect x="268" y="66" width="32" height="18" class="s-lblue"/><rect x="304" y="66" width="28" height="18" class="s-lblue"/>
+  <rect x="268" y="88" width="32" height="16" class="s-lblue"/><rect x="304" y="88" width="28" height="16" class="s-or"/>
+  <path d="M254 113h92l-7 11h-78z" class="s-navy2"/>
+  <polygon points="380,92 399,76 418,92" class="s-or"/><rect x="384" y="92" width="30" height="32" class="s-navy2"/><rect x="394" y="106" width="10" height="18" class="s-lblue"/>
+  <rect x="422" y="84" width="30" height="22" rx="2" class="s-navy"/><rect x="425" y="87" width="24" height="16" class="s-lblue"/><rect x="418" y="108" width="38" height="5" rx="2" class="s-navy2"/>
+  <text x="60" y="172" class="il-t">Presencial</text><text x="180" y="172" class="il-t">A distancia</text><text x="300" y="172" class="il-t">En línea</text><text x="420" y="172" class="il-t">Híbrida</text>
+</symbol>
+
+<symbol id="il-ent" viewBox="0 0 480 200">
+  <rect width="480" height="200" class="s-bg"/>
+  <rect x="60" y="20" width="360" height="164" rx="10" class="s-win"/>
+  <path d="M60 46V30a10 10 0 0 1 10-10h340a10 10 0 0 1 10 10v16z" class="s-navy"/>
+  <circle cx="78" cy="33" r="4" class="s-or"/><circle cx="92" cy="33" r="4" class="s-lblue"/><circle cx="106" cy="33" r="4" class="s-lblue"/>
+  <rect x="124" y="27" width="200" height="12" rx="6" class="s-navy2"/>
+  <rect x="61" y="46" width="90" height="137" class="s-pale"/>
+  <rect x="72" y="60" width="66" height="9" rx="4" class="s-or"/><rect x="72" y="78" width="66" height="9" rx="4" class="s-blue"/>
+  <rect x="72" y="96" width="56" height="9" rx="4" class="s-blue"/><rect x="72" y="114" width="62" height="9" rx="4" class="s-blue"/><rect x="72" y="132" width="50" height="9" rx="4" class="s-blue"/>
+  <rect x="164" y="60" width="120" height="52" rx="6" class="s-pale"/><circle cx="190" cy="86" r="14" class="s-or"/><polygon points="186,79 186,93 198,86" class="s-wh"/>
+  <rect x="212" y="76" width="62" height="6" rx="3" class="s-blue"/><rect x="212" y="90" width="44" height="6" rx="3" class="s-lblue"/>
+  <rect x="296" y="60" width="112" height="52" rx="6" class="s-pale"/><rect x="308" y="72" width="60" height="6" rx="3" class="s-blue"/><rect x="308" y="86" width="84" height="6" rx="3" class="s-lblue"/><rect x="308" y="98" width="40" height="6" rx="3" class="s-lblue"/>
+  <rect x="164" y="126" width="244" height="10" rx="5" class="s-bar"/><rect x="164" y="126" width="156" height="10" rx="5" class="s-or"/>
+  <rect x="164" y="148" width="190" height="8" rx="4" class="s-bar"/><rect x="164" y="162" width="130" height="8" rx="4" class="s-bar"/>
+</symbol>
+
+<symbol id="il-concl" viewBox="0 0 480 200">
+  <rect width="480" height="200" class="s-bg"/><rect y="180" width="480" height="20" class="s-floor"/>
+  <rect x="90" y="140" width="70" height="40" class="s-lblue"/><rect x="160" y="110" width="70" height="70" class="s-blue"/>
+  <rect x="230" y="80" width="70" height="100" class="s-navy2"/><rect x="300" y="50" width="70" height="130" class="s-navy"/>
+  <rect x="332" y="14" width="4" height="36" class="s-navy"/><polygon points="336,14 368,24 336,34" class="s-or"/>
+  <path d="M96 122Q150 56 276 38" fill="none" stroke="#F7941D" stroke-width="4" stroke-linecap="round"/>
+  <polygon points="284,40 268,28 266,48" class="s-or"/>
+  <circle cx="60" cy="60" r="4" class="s-lblue"/><circle cx="420" cy="90" r="4" class="s-lblue"/><circle cx="410" cy="40" r="3" class="s-or"/>
+</symbol>
+
+</defs>
+</svg>
+
+
+<header class="top" id="top">
+  <div class="bar">
+    <a class="brand" href="#inicio" data-go="inicio">Aula Conectada<small>TIC y competencia digital docente</small></a>
+    <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="nav">Menú</button>
+    <nav id="nav" aria-label="Secciones del sitio">
+      <ul>
+        <li><a href="#inicio" data-go="inicio">Inicio</a></li>
+        <li><a href="#presentacion" data-go="presentacion">Presentación</a></li>
+        <li><a href="#historia" data-go="historia">Historia TIC</a></li>
+        <li><a href="#competencia" data-go="competencia">Competencia Digital</a></li>
+        <li><a href="#teorias" data-go="teorias"><span class="full">Teorías de Aprendizaje</span><span class="short">Teorías</span></a></li>
+        <li><a href="#formatos" data-go="formatos"><span class="full">Formatos Educativos</span><span class="short">Formatos</span></a></li>
+        <li><a href="#entornos" data-go="entornos"><span class="full">Entornos Virtuales</span><span class="short">Entornos</span></a></li>
+        <li><a href="#conclusiones" data-go="conclusiones">Conclusiones</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- 1. INICIO -->
+<section class="page" id="inicio" data-title="Inicio">
+  <div class="banner">
+    <div class="banner-in">
+      <div class="slides">
+        <div class="slide on" aria-hidden="false">
+          <p class="hello">Bienvenidos a</p>
+          <h1>Aula Conectada</h1>
+          <div class="bline"></div>
+          <p class="lead">Un recorrido por las TIC, la competencia digital docente y el aprendizaje en la era digital.</p>
+          <p class="author">Angelica Abigail Guaman Gómez</p>
+        </div>
+        <div class="slide" aria-hidden="true">
+          <h2 class="slide-title">Propósito del trabajo</h2>
+          <p class="txt">Este sitio reúne, organiza y presenta contenidos sobre las TIC, la competencia digital docente, las teorías del aprendizaje en la era digital, los formatos educativos y los entornos virtuales. Es una muestra de mis habilidades técnicas, pedagógicas y de comunicación digital como futuro docente.</p>
+          <p class="author">Angelica Abigail Guaman Gómez</p>
+        </div>
+      </div>
+      <svg class="art" viewBox="0 0 520 300" role="img" aria-label="Ilustración de una laptop, un monitor y una tablet con un birrete, que representan la tecnología en la educación">
+        <g fill="#9CC7EA"><circle cx="40" cy="70" r="3.5"/><circle cx="470" cy="56" r="3.5"/><circle cx="492" cy="150" r="3.5"/><circle cx="60" cy="252" r="3.5"/><circle cx="486" cy="252" r="3.5"/></g>
+        <g stroke="#9CC7EA" stroke-width="2" stroke-linecap="round"><path d="M446 86v10M441 91h10"/><path d="M28 196v10M23 201h10"/><path d="M198 272v10M193 277h10"/></g>
+        <g stroke="#4C7FA6" stroke-width="2" stroke-linecap="round"><path d="M380 96h72"/><path d="M52 268h130"/><path d="M340 274h110"/></g>
+        <!-- wifi -->
+        <g fill="none" stroke="#BFE0F7" stroke-width="2.5" stroke-linecap="round"><path d="M94 112Q115 92 136 112"/><path d="M103 121Q115 110 127 121"/></g>
+        <circle cx="115" cy="130" r="3" fill="#BFE0F7"/>
+        <!-- monitor -->
+        <rect x="190" y="92" width="170" height="112" rx="8" fill="#0F4468" stroke="#BFE0F7" stroke-width="3"/>
+        <rect x="266" y="204" width="18" height="24" fill="#BFE0F7"/>
+        <rect x="236" y="228" width="78" height="8" rx="4" fill="#BFE0F7"/>
+        <circle cx="275" cy="148" r="6" fill="#F7941D"/>
+        <g fill="none" stroke="#BFE0F7" stroke-width="2.5"><ellipse cx="275" cy="148" rx="36" ry="13"/><ellipse cx="275" cy="148" rx="36" ry="13" transform="rotate(60 275 148)"/><ellipse cx="275" cy="148" rx="36" ry="13" transform="rotate(-60 275 148)"/></g>
+        <!-- laptop -->
+        <rect x="58" y="146" width="114" height="72" rx="6" fill="#0F4468" stroke="#BFE0F7" stroke-width="3"/>
+        <g fill="none" stroke="#BFE0F7" stroke-width="2.5"><circle cx="115" cy="182" r="22"/><ellipse cx="115" cy="182" rx="9" ry="22"/><path d="M93 182h44"/></g>
+        <rect x="40" y="220" width="150" height="9" rx="4.5" fill="#BFE0F7"/>
+        <!-- tablet -->
+        <rect x="382" y="126" width="74" height="112" rx="9" fill="#0F4468" stroke="#F7941D" stroke-width="3"/>
+        <g fill="none" stroke="#BFE0F7" stroke-width="2.5" stroke-linejoin="round"><polygon points="419,154 438,165 438,187 419,198 400,187 400,165"/><path d="M419,176v22M419,176l-19-11M419,176l19-11"/></g>
+        <!-- birrete -->
+        <path d="M240 56v18c0 11 70 11 70 0V56l-35 18z" fill="#D97A06"/>
+        <polygon points="275,24 337,45 275,66 213,45" fill="#F7941D"/>
+        <path d="M331 47v28" stroke="#F9C98E" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="331" cy="79" r="4.5" fill="#F9C98E"/>
+      </svg>
+    </div>
+    <div class="dots" role="group" aria-label="Diapositivas del banner">
+      <button class="dot on" type="button" aria-label="Ver diapositiva 1" aria-current="true"></button>
+      <button class="dot" type="button" aria-label="Ver diapositiva 2" aria-current="false"></button>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <h3 class="st" style="margin-top:0">Presentación</h3>
+    <div class="intro-card">
+      <img class="avatar" alt="Foto de perfil de Angelica Abigail Guaman Gómez" src="data:image/jpeg;base64,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">
+      <div>
+        <h4 class="name">Angelica Abigail Guaman Gómez</h4>
+        <p>Soy estudiante de la carrera de Educación en la Universidad Estatal de Milagro. Soy bachiller en ciencias y auxiliar de enfermería certificada. Me interesa la innovación educativa y el uso de recursos digitales para lograr clases más interesantes, inclusivas y fáciles de comprender.</p>
+        <a class="btn" href="#presentacion" data-go="presentacion">Conozcan más de mí
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <h3 class="st">Explora los temas</h3>
+    <div class="cards">
+      <a class="card" href="#historia" data-go="historia">
+        <div class="card-top"><svg viewBox="0 0 480 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#il-hist"/></svg></div>
+        <div class="card-body"><h4>Historia TIC</h4><p>Definición, clasificación, línea de tiempo e impacto de las TIC.</p><span class="more">Ver sección</span></div>
+      </a>
+      <a class="card" href="#competencia" data-go="competencia">
+        <div class="card-top"><svg viewBox="0 0 480 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#il-comp"/></svg></div>
+        <div class="card-body"><h4>Competencia Digital</h4><p>El docente del siglo XXI y las TIC en la enseñanza-aprendizaje.</p><span class="more">Ver sección</span></div>
+      </a>
+      <a class="card" href="#teorias" data-go="teorias">
+        <div class="card-top"><svg viewBox="0 0 480 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#il-teor"/></svg></div>
+        <div class="card-body"><h4>Teorías de Aprendizaje</h4><p>Constructivismo y conectivismo en la era digital.</p><span class="more">Ver sección</span></div>
+      </a>
+      <a class="card" href="#formatos" data-go="formatos">
+        <div class="card-top"><svg viewBox="0 0 480 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#il-form"/></svg></div>
+        <div class="card-body"><h4>Formatos Educativos</h4><p>Educación presencial, a distancia, en línea e híbrida.</p><span class="more">Ver sección</span></div>
+      </a>
+      <a class="card" href="#entornos" data-go="entornos">
+        <div class="card-top"><svg viewBox="0 0 480 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#il-ent"/></svg></div>
+        <div class="card-body"><h4>Entornos Virtuales</h4><p>Definición, tipos y características de los entornos de aprendizaje.</p><span class="more">Ver sección</span></div>
+      </a>
+      <a class="card" href="#conclusiones" data-go="conclusiones">
+        <div class="card-top"><svg viewBox="0 0 480 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#il-concl"/></svg></div>
+        <div class="card-body"><h4>Conclusiones</h4><p>Reflexión personal sobre las TIC en la educación.</p><span class="more">Ver sección</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 2. PRESENTACIÓN PERSONAL -->
+<section class="page" id="presentacion" data-title="Presentación" hidden>
+  <div class="wrap">
+    <header class="page-head"><p class="kick">Sobre mí</p><h2>Presentación personal</h2></header>
+
+    <div class="who">
+      <img class="avatar" alt="Foto personal de Angelica Abigail Guaman Gómez" src="data:image/jpeg;base64,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">
+      <h3 class="name">Angelica Abigail Guaman Gómez</h3>
+      <p class="role">Estudiante de Educación, Universidad Estatal de Milagro</p>
+    </div>
+
+    <div class="grid3">
+      <div class="panel"><h4>Formación</h4><p>Soy bachiller en ciencias y auxiliar de enfermería certificada. Actualmente estudio la carrera de Educación.</p></div>
+      <div class="panel"><h4>Intereses académicos</h4><p>Me interesa aprender sobre innovación educativa y conocer nuevas formas de enseñar que hagan las clases más interesantes y fáciles de comprender. También me interesan el uso de recursos digitales, la inclusión y la evaluación, ya que considero importante aprender a trabajar con estudiantes que tienen diferentes necesidades y formas de aprender.</p></div>
+      <div class="panel"><h4>Expectativas sobre el curso</h4><p>Espero que este curso me ayude a adquirir conocimientos y herramientas que realmente pueda utilizar en mis futuras clases. Me gustaría aprender estrategias sencillas y prácticas para enseñar mejor, utilizar adecuadamente los recursos digitales y lograr que mis estudiantes participen y se sientan incluidos. También espero aprender de las experiencias de mis compañeros y aplicar lo aprendido cuando ejerza como docente.</p></div>
+    </div>
+
+    <h3 class="st">FODA personal</h3>
+    <p class="note">En relación con mi competencia digital y mi uso de las TIC.</p>
+    <div class="swot">
+      <div class="sw f"><h4>Fortalezas</h4><ul>
+        <li>Tengo interés por aprender a utilizar nuevas herramientas digitales.</li>
+        <li>Puedo utilizar herramientas básicas como Word, PowerPoint, WhatsApp y plataformas educativas.</li>
+        <li>Tengo disposición para mejorar mis conocimientos tecnológicos y aplicarlos en mis estudios.</li></ul></div>
+      <div class="sw d"><h4>Debilidades</h4><ul>
+        <li>A veces tengo dificultad para utilizar herramientas digitales que no conozco.</li>
+        <li>Necesito más práctica para aprovechar todas las funciones de las plataformas educativas.</li>
+        <li>En ocasiones me toma tiempo aprender a utilizar nuevos programas o aplicaciones.</li></ul></div>
+      <div class="sw o"><h4>Oportunidades</h4><ul>
+        <li>Los cursos y capacitaciones me permiten aprender nuevas herramientas digitales.</li>
+        <li>El acceso a Internet me brinda la posibilidad de buscar información y recursos educativos.</li>
+        <li>Puedo utilizar las TIC para preparar actividades más dinámicas para mis futuros estudiantes.</li></ul></div>
+      <div class="sw a"><h4>Amenazas</h4><ul>
+        <li>Los problemas de conexión a Internet pueden dificultar el desarrollo de algunas actividades.</li>
+        <li>Los cambios constantes en la tecnología pueden hacer que algunas herramientas queden desactualizadas.</li>
+        <li>La falta de equipos tecnológicos adecuados puede limitar el uso de algunos recursos digitales.</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. HISTORIA TIC (Tema 1) -->
+<section class="page" id="historia" data-title="Historia TIC" hidden>
+  <div class="wrap">
+    <header class="page-head"><p class="kick">Tema 1</p><h2>Historia e impacto de las TIC</h2></header>
+    <figure class="illus"><svg viewBox="0 0 480 200" role="img" aria-label="Evolución de los dispositivos: de las primeras computadoras al teléfono inteligente"><use href="#il-hist"/></svg><figcaption>De las primeras computadoras a los dispositivos móviles</figcaption></figure>
+
+    <div class="grid2" style="align-items:center">
+      <div>
+        <h3>Definición y características</h3>
+        <p>Las Tecnologías de la Información y la Comunicación (TIC) son el conjunto de herramientas, equipos y servicios que permiten crear, almacenar, procesar, transmitir y compartir información en formato digital. Se basan en la informática, la microelectrónica y las telecomunicaciones, y su mayor valor está en que funcionan de manera conectada entre sí.</p>
+        <ul>
+          <li><strong>Interactividad:</strong> permite un intercambio entre la persona y el recurso, y adaptar la actividad a las necesidades de cada estudiante.</li>
+          <li><strong>Interconexión:</strong> combina distintas tecnologías para crear nuevas posibilidades, como el correo electrónico.</li>
+          <li><strong>Inmaterialidad:</strong> la información se crea, procesa y comunica en formato digital, sin depender de un soporte físico.</li>
+          <li><strong>Instantaneidad:</strong> el acceso a la información y la comunicación son rápidos, sin importar la distancia.</li>
+          <li><strong>Digitalización:</strong> la información se representa en un formato común para que distintos medios puedan intercambiarla.</li>
+        </ul>
+      </div>
+      <div>
+        <svg class="ig" viewBox="0 0 420 260" role="img" aria-label="Infografía: características de las TIC: interactividad, interconexión, inmaterialidad, instantaneidad y digitalización">
+          <g class="ig-line"><line x1="210" y1="130" x2="79" y2="40"/><line x1="210" y1="130" x2="341" y2="40"/><line x1="210" y1="130" x2="71" y2="130"/><line x1="210" y1="130" x2="349" y2="130"/><line x1="210" y1="130" x2="210" y2="230"/></g>
+          <rect class="ig-box" x="14" y="20" width="130" height="40" rx="8"/><text class="ig-t" x="79" y="45">Interactividad</text>
+          <rect class="ig-box" x="276" y="20" width="130" height="40" rx="8"/><text class="ig-t" x="341" y="45">Interconexión</text>
+          <rect class="ig-box" x="6" y="110" width="130" height="40" rx="8"/><text class="ig-t" x="71" y="135">Inmaterialidad</text>
+          <rect class="ig-box" x="284" y="110" width="130" height="40" rx="8"/><text class="ig-t" x="349" y="135">Instantaneidad</text>
+          <rect class="ig-box" x="140" y="210" width="140" height="40" rx="8"/><text class="ig-t" x="210" y="235">Digitalización</text>
+          <circle class="ig-core" cx="210" cy="130" r="44"/><text class="ig-ct" x="210" y="138">TIC</text>
+        </svg>
+        <p class="fig-cap">Características principales de las TIC</p>
+      </div>
+    </div>
+
+    <h3 class="st">Clasificación de las TIC</h3>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Categoría</th><th>Descripción</th><th>Ejemplos</th><th>Uso en educación</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Redes</th><td>Medios que permiten la conexión y el intercambio de información entre dispositivos y personas.</td><td>Internet, telefonía móvil, redes Wi-Fi, correo electrónico.</td><td>Comunicación entre docentes y estudiantes, acceso a información y trabajo colaborativo a distancia.</td></tr>
+          <tr><th scope="row">Terminales</th><td>Dispositivos con los que se accede a la información y se utilizan los servicios digitales.</td><td>Computadoras, laptops, tabletas, celulares, pizarras digitales.</td><td>Desarrollo de actividades en clase, consulta de recursos y elaboración de tareas.</td></tr>
+          <tr><th scope="row">Servicios</th><td>Aplicaciones y plataformas que se ofrecen a través de las redes y de los terminales.</td><td>Plataformas educativas, videollamadas, almacenamiento en la nube, redes sociales.</td><td>Gestión de cursos, clases virtuales, evaluación en línea y creación de contenidos.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="st">Historia de las TIC en la educación</h3>
+    <p class="note">Selecciona una etapa para ver sus hitos.</p>
+    <div class="tl" data-tl>
+      <div class="tl-tabs" role="tablist" aria-label="Etapas de la historia de las TIC">
+        <button type="button" role="tab" id="tt1" aria-controls="tp1" aria-selected="true">1950–1970</button>
+        <button type="button" role="tab" id="tt2" aria-controls="tp2" aria-selected="false">1970–1990</button>
+        <button type="button" role="tab" id="tt3" aria-controls="tp3" aria-selected="false">1990–2000</button>
+        <button type="button" role="tab" id="tt4" aria-controls="tp4" aria-selected="false">2000–2010</button>
+        <button type="button" role="tab" id="tt5" aria-controls="tp5" aria-selected="false">2010–2020</button>
+        <button type="button" role="tab" id="tt6" aria-controls="tp6" aria-selected="false">2020–hoy</button>
+      </div>
+      <div class="tl-panel" role="tabpanel" id="tp1" aria-labelledby="tt1"><h4>Las primeras computadoras llegan a las universidades</h4><p>Aparecen las primeras computadoras, de gran tamaño y de uso casi exclusivo de universidades y centros de investigación. En la educación surgen los primeros programas de instrucción asistida por computadora, como el sistema PLATO, desarrollado en la Universidad de Illinois.</p></div>
+      <div class="tl-panel" role="tabpanel" id="tp2" aria-labelledby="tt2" hidden><h4>Llegan las computadoras personales</h4><p>El microprocesador, creado en 1971, y las computadoras personales permiten que escuelas y hogares accedan a equipos más pequeños y económicos. Se difunde el software educativo y los lenguajes de programación pensados para aprender, como Logo.</p></div>
+      <div class="tl-panel" role="tabpanel" id="tp3" aria-labelledby="tt3" hidden><h4>Internet y la web</h4><p>La World Wide Web se hace pública a inicios de los años noventa. El correo electrónico y los buscadores facilitan el acceso a la información, y las instituciones educativas incorporan salas de computación, discos CD-ROM y los primeros cursos en línea.</p></div>
+      <div class="tl-panel" role="tabpanel" id="tp4" aria-labelledby="tt4" hidden><h4>Web 2.0 y plataformas virtuales</h4><p>Los blogs, los wikis y las redes sociales convierten a los usuarios en creadores de contenido. Se consolidan los entornos virtuales de aprendizaje y plataformas como Moodle, y se popularizan los videos educativos en línea.</p></div>
+      <div class="tl-panel" role="tabpanel" id="tp5" aria-labelledby="tt5" hidden><h4>Movilidad y nube</h4><p>Los teléfonos inteligentes y las tabletas permiten aprender en cualquier lugar. Crecen el almacenamiento en la nube, las herramientas colaborativas y los cursos masivos abiertos en línea (MOOC), y se amplía el uso de plataformas como Google Classroom.</p></div>
+      <div class="tl-panel" role="tabpanel" id="tp6" aria-labelledby="tt6" hidden><h4>Educación remota e inteligencia artificial</h4><p>La pandemia de COVID-19 obligó a continuar las clases a distancia mediante videollamadas y plataformas virtuales, lo que aceleró la formación digital de docentes y estudiantes. En los últimos años se incorporan herramientas de inteligencia artificial que ofrecen nuevas oportunidades y también plantean retos éticos.</p></div>
+    </div>
+
+    <h3 class="st">Impacto de las TIC en la sociedad</h3>
+    <div class="grid2">
+      <div class="panel blue"><h4>En la comunicación y el trabajo</h4><p>Las TIC cambiaron la forma de comunicarnos y de trabajar: hoy es posible comunicarse de inmediato con personas de cualquier lugar, realizar teletrabajo, hacer trámites en línea y acceder a servicios digitales. También han generado nuevas profesiones y han aumentado la demanda de habilidades digitales.</p></div>
+      <div class="panel blue"><h4>En la educación y la cultura</h4><p>En la educación ampliaron el acceso a la información y permiten aprender fuera del aula. En la cultura facilitan difundir y conservar el conocimiento, el arte y las tradiciones. Sin embargo, también muestran la brecha digital: no todas las personas tienen el mismo acceso a Internet y a equipos tecnológicos.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. COMPETENCIA DIGITAL (Tema 2) -->
+<section class="page" id="competencia" data-title="Competencia Digital" hidden>
+  <div class="wrap">
+    <header class="page-head"><p class="kick">Tema 2</p><h2>Competencia digital docente y TIC en la enseñanza-aprendizaje</h2></header>
+    <figure class="illus"><svg viewBox="0 0 480 200" role="img" aria-label="Docente explicando con apoyo de una pantalla digital"><use href="#il-comp"/></svg><figcaption>El docente apoya su enseñanza con recursos digitales</figcaption></figure>
+
+    <div class="prose">
+      <h3>El profesor del siglo XXI y sus competencias digitales</h3>
+      <p>El docente del siglo XXI ya no es solo quien transmite información: es un guía que orienta, diseña experiencias de aprendizaje y ayuda a los estudiantes a buscar, evaluar y usar la información de manera crítica. Para ello necesita competencias digitales, es decir, los conocimientos, habilidades y actitudes que le permiten usar las tecnologías de forma eficaz, segura y responsable en su práctica profesional. El Marco común de competencia digital docente (INTEF, 2017) organiza esta competencia en cinco áreas, que se resumen en la siguiente tabla.</p>
+    </div>
+    <div class="tbl" style="margin-top:6px">
+      <table>
+        <thead><tr><th>Área de competencia</th><th>¿Qué implica?</th><th>Ejemplo en la práctica docente</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Información y alfabetización informacional</th><td>Buscar, filtrar, evaluar y organizar información y contenidos digitales.</td><td>Comparar varias fuentes confiables antes de preparar una clase y enseñar a los estudiantes a verificar datos.</td></tr>
+          <tr><th scope="row">Comunicación y colaboración</th><td>Comunicarse y trabajar con otras personas mediante herramientas digitales, respetando las normas de convivencia en línea.</td><td>Dar indicaciones y resolver dudas en una plataforma educativa y organizar trabajos en documentos compartidos.</td></tr>
+          <tr><th scope="row">Creación de contenidos digitales</th><td>Crear y editar recursos digitales respetando los derechos de autor.</td><td>Elaborar presentaciones, infografías o videos cortos para explicar un tema.</td></tr>
+          <tr><th scope="row">Seguridad</th><td>Proteger los dispositivos, los datos personales y el bienestar propio y de los estudiantes.</td><td>Usar contraseñas seguras, no compartir datos personales y orientar el uso responsable de Internet.</td></tr>
+          <tr><th scope="row">Resolución de problemas</th><td>Identificar necesidades y resolver problemas técnicos, eligiendo la herramienta digital adecuada.</td><td>Preparar materiales descargables para que los estudiantes puedan trabajar si falla la conexión.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid2" style="margin-top:26px">
+      <div class="panel"><h4>Acceso a la información en la era digital</h4><p>Internet permite consultar en pocos segundos libros, artículos, videos y bases de datos que antes eran difíciles de conseguir. Esta abundancia exige criterio, porque no toda la información es confiable. Por eso el docente debe enseñar a revisar la autoría, la fecha y la procedencia de las fuentes, y a preferir páginas académicas e institucionales.</p></div>
+      <div class="panel"><h4>TIC en el proceso de enseñanza-aprendizaje</h4><p>Las TIC apoyan al docente en todo el proceso y, para el estudiante, son un medio para investigar, practicar, comunicarse y crear. Su uso tiene sentido cuando responde a un objetivo pedagógico claro y no solo al deseo de usar tecnología. El siguiente esquema muestra cómo pueden intervenir.</p></div>
+    </div>
+
+    <div class="flow" style="margin-top:16px">
+      <div class="step"><span class="tag">Antes de la clase</span><p>Planificar, buscar recursos confiables y preparar materiales digitales.</p></div>
+      <div class="step"><span class="tag">Durante la clase</span><p>Presentar contenidos, motivar y evaluar con actividades interactivas.</p></div>
+      <div class="step"><span class="tag">Después de la clase</span><p>Retroalimentar, recibir tareas y dar seguimiento a cada estudiante.</p></div>
+    </div>
+
+    <h3 class="st">Ventajas y desventajas de las TIC en educación</h3>
+    <div class="grid2">
+      <div class="panel pro"><h4>Ventajas</h4><ul>
+        <li>Facilitan el acceso rápido a la información y a recursos variados.</li>
+        <li>Hacen las clases más dinámicas y motivadoras, con videos, juegos y simuladores.</li>
+        <li>Permiten aprender a distintos ritmos y adaptar las actividades a estudiantes con diferentes necesidades.</li>
+        <li>Favorecen la comunicación y el trabajo colaborativo, incluso a distancia.</li></ul></div>
+      <div class="panel con"><h4>Desventajas</h4><ul>
+        <li>Dependen de la conexión a Internet y de contar con equipos adecuados, lo que genera brecha digital.</li>
+        <li>Pueden causar distracción y uso excesivo de pantallas.</li>
+        <li>Existe información poco confiable y riesgos para la seguridad y la privacidad.</li>
+        <li>Requieren formación docente continua para usarlas con sentido pedagógico.</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. TEORÍAS DE APRENDIZAJE (Tema 3) -->
+<section class="page" id="teorias" data-title="Teorías de Aprendizaje" hidden>
+  <div class="wrap">
+    <header class="page-head"><p class="kick">Tema 3</p><h2>Una teoría del aprendizaje para la era digital</h2></header>
+    <figure class="illus"><svg viewBox="0 0 480 200" role="img" aria-label="Bloques que representan el constructivismo y una red que representa el conectivismo"><use href="#il-teor"/></svg><figcaption>Construir el conocimiento y conectarlo en red</figcaption></figure>
+
+    <div class="grid2">
+      <div class="panel">
+        <h3>Constructivismo</h3>
+        <p>El constructivismo sostiene que el estudiante construye su propio conocimiento a partir de sus experiencias y de lo que ya sabe, en interacción con otras personas y con el entorno. Aprender no es solo recibir información, sino darle significado (Díaz Barriga y Hernández, 2002).</p>
+        <h4>Principios</h4>
+        <ul>
+          <li>El aprendizaje es un proceso activo: el estudiante construye el conocimiento.</li>
+          <li>Se parte de los conocimientos previos del estudiante.</li>
+          <li>Se busca el aprendizaje significativo, que conecta lo nuevo con lo que ya se conoce.</li>
+          <li>El aprendizaje tiene un componente social: se aprende con otros.</li>
+          <li>El docente es mediador y guía del proceso.</li>
+        </ul>
+      </div>
+      <div class="panel blue">
+        <h3>Conectivismo</h3>
+        <p>El conectivismo es una teoría del aprendizaje propuesta para la era digital. Plantea que el conocimiento está distribuido en redes de personas, bases de datos y recursos digitales, y que aprender consiste en crear y mantener conexiones entre esos nodos (López De La Cruz y Escobedo Bailón, 2021).</p>
+        <h4>Principios</h4>
+        <ul>
+          <li>El aprendizaje se apoya en la diversidad de opiniones y de fuentes.</li>
+          <li>Aprender es conectar nodos o fuentes especializadas de información.</li>
+          <li>El conocimiento puede estar en dispositivos y organizaciones, y no solo en las personas.</li>
+          <li>Saber cómo seguir aprendiendo importa más que lo que se sabe hoy.</li>
+          <li>Mantener las conexiones es necesario para aprender de forma continua.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="st">Comparación entre ambas teorías</h3>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Aspecto</th><th>Constructivismo</th><th>Conectivismo</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Idea central</th><td>El estudiante construye el conocimiento a partir de sus experiencias y conocimientos previos.</td><td>El conocimiento se forma al conectar los nodos de una red de personas e información.</td></tr>
+          <tr><th scope="row">Rol del estudiante</th><td>Participante activo que investiga, pregunta y resuelve problemas.</td><td>Gestor de su propia red de aprendizaje: busca, selecciona y conecta fuentes.</td></tr>
+          <tr><th scope="row">Rol del docente</th><td>Mediador que guía y plantea situaciones de aprendizaje.</td><td>Orientador que ayuda a filtrar información y a crear conexiones.</td></tr>
+          <tr><th scope="row">Papel de la tecnología</th><td>Herramienta de apoyo para explorar, crear y representar el conocimiento.</td><td>Parte esencial: las redes digitales son el medio donde se aprende.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="st">Constructivismo y conectivismo en procesos educativos</h3>
+    <div class="prose">
+      <p>Ambas teorías se complementan. Con el constructivismo, el docente propone actividades en las que los estudiantes parten de lo que saben, como resolver un problema o elaborar un proyecto. Con el conectivismo, esas actividades se enriquecen al usar la red: por ejemplo, investigar en distintas fuentes digitales, compartir los resultados en un documento colaborativo y debatir con los compañeros desde una plataforma educativa. Así, el estudiante construye conocimiento y, al mismo tiempo, aprende a moverse en la información de la era digital.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 6. FORMATOS EDUCATIVOS (Tema 4) -->
+<section class="page" id="formatos" data-title="Formatos Educativos" hidden>
+  <div class="wrap">
+    <header class="page-head"><p class="kick">Tema 4</p><h2>Clasificación de la educación según su formato</h2></header>
+    <figure class="illus"><svg viewBox="0 0 480 200" role="img" aria-label="Iconos de los cuatro formatos educativos"><use href="#il-form"/></svg><figcaption>Cuatro formas de educar: presencial, a distancia, en línea e híbrida</figcaption></figure>
+
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Formato</th><th>Definición</th><th>Características</th><th>Ejemplo</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Educación presencial</th><td>Modalidad en la que docentes y estudiantes coinciden en el mismo lugar y horario.</td><td>Interacción directa, horarios fijos, apoyo inmediato del docente y uso del aula física.</td><td>Clases en el aula universitaria con apoyo de proyector y plataforma educativa.</td></tr>
+          <tr><th scope="row">Educación a distancia</th><td>Modalidad en la que docentes y estudiantes están en espacios diferentes y se comunican mediante medios y recursos; el estudiante puede aprender de forma independiente o en grupo (García Aretio, 2020).</td><td>Autonomía del estudiante, materiales preparados, tutorías y horarios flexibles.</td><td>Programas con módulos y tutorías, con materiales enviados por medios digitales.</td></tr>
+          <tr><th scope="row">Educación en línea</th><td>Educación a distancia que se desarrolla a través de Internet y de plataformas virtuales.</td><td>Clases y actividades en plataformas, comunicación por videollamadas, foros y mensajes, y recursos digitales.</td><td>Cursos virtuales en plataformas como Moodle o Google Classroom.</td></tr>
+          <tr><th scope="row">Educación híbrida</th><td>Modalidad que combina actividades presenciales con actividades en línea.</td><td>Flexibilidad, uso del aula física y del entorno virtual, y mayor autonomía del estudiante.</td><td>Clases presenciales semanales complementadas con tareas, foros y evaluaciones en una plataforma.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="st">Diferencias que debo tener presentes</h3>
+    <div class="prose">
+      <p>La principal diferencia entre estos formatos está en dónde y cuándo se encuentran docentes y estudiantes, y en el papel que cumple la tecnología. En la educación presencial la tecnología es un apoyo; en la educación a distancia y en línea es el medio principal de comunicación; y en la híbrida se combinan ambos espacios. La elección depende del contexto: la conectividad disponible, la edad de los estudiantes y los objetivos de aprendizaje. Donde hay problemas de Internet, el formato presencial o el híbrido con materiales descargables puede ser más adecuado.</p>
+    </div>
+    <div class="narrow" style="margin-top:12px">
+      <div class="scale"><div>Presencial</div><div>Híbrida</div><div>A distancia</div><div>En línea</div></div>
+      <div class="scale-bar"></div>
+      <div class="scale-lbl"><span>Menor uso de tecnología</span><span>Mayor uso de tecnología</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. ENTORNOS VIRTUALES (Tema 5) -->
+<section class="page" id="entornos" data-title="Entornos Virtuales" hidden>
+  <div class="wrap">
+    <header class="page-head"><p class="kick">Tema 5</p><h2>Entornos virtuales de aprendizaje</h2></header>
+    <figure class="illus"><svg viewBox="0 0 480 200" role="img" aria-label="Ejemplo de la pantalla de un entorno virtual de aprendizaje"><use href="#il-ent"/></svg><figcaption>Un entorno virtual reúne contenidos, actividades y seguimiento</figcaption></figure>
+
+    <div class="grid2" style="align-items:center">
+      <div>
+        <h3>Definición</h3>
+        <p>Un entorno virtual de aprendizaje (EVA) es un espacio digital, al que se accede por Internet, que reúne en un mismo lugar los recursos, las actividades, las herramientas de comunicación y los mecanismos de evaluación necesarios para enseñar y aprender. Permite que docentes y estudiantes interactúen aunque no coincidan en el tiempo ni en el lugar.</p>
+        <h3 style="margin-top:14px">Características principales</h3>
+        <ul>
+          <li><strong>Accesibilidad:</strong> se puede ingresar desde cualquier lugar con Internet y con horarios flexibles.</li>
+          <li><strong>Comunicación:</strong> ofrece foros, chats, mensajes y videoconferencias.</li>
+          <li><strong>Contenidos organizados:</strong> los materiales se distribuyen por unidades y en distintos formatos.</li>
+          <li><strong>Seguimiento y evaluación:</strong> registra tareas, cuestionarios y calificaciones.</li>
+          <li><strong>Trabajo colaborativo:</strong> facilita actividades en grupo y el intercambio entre compañeros.</li>
+        </ul>
+      </div>
+      <div>
+        <svg class="ig" viewBox="0 0 420 240" role="img" aria-label="Infografía: componentes de un entorno virtual de aprendizaje: contenidos, comunicación, actividades y evaluación">
+          <g class="ig-line"><line x1="210" y1="120" x2="84" y2="34"/><line x1="210" y1="120" x2="336" y2="34"/><line x1="210" y1="120" x2="84" y2="206"/><line x1="210" y1="120" x2="336" y2="206"/></g>
+          <rect class="ig-box" x="14" y="14" width="140" height="40" rx="8"/><text class="ig-t" x="84" y="39">Contenidos</text>
+          <rect class="ig-box" x="266" y="14" width="140" height="40" rx="8"/><text class="ig-t" x="336" y="39">Comunicación</text>
+          <rect class="ig-box" x="14" y="186" width="140" height="40" rx="8"/><text class="ig-t" x="84" y="211">Actividades</text>
+          <rect class="ig-box" x="266" y="186" width="140" height="40" rx="8"/><text class="ig-t" x="336" y="211">Evaluación</text>
+          <circle class="ig-core" cx="210" cy="120" r="44"/><text class="ig-ct" x="210" y="128">EVA</text>
+        </svg>
+        <p class="fig-cap">Componentes de un entorno virtual de aprendizaje</p>
+      </div>
+    </div>
+
+    <h3 class="st">Tipos de entornos virtuales</h3>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Tipo</th><th>Descripción</th><th>Plataformas de ejemplo</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Sistemas de gestión del aprendizaje (LMS)</th><td>Plataformas completas para crear y administrar cursos, con actividades, evaluación y seguimiento.</td><td>Moodle, Canvas, Blackboard.</td></tr>
+          <tr><th scope="row">Aulas virtuales sencillas</th><td>Herramientas simples para organizar tareas, materiales y la comunicación entre docente y estudiantes.</td><td>Google Classroom, Microsoft Teams.</td></tr>
+          <tr><th scope="row">Herramientas de videoconferencia</th><td>Servicios para clases en vivo, reuniones y tutorías en tiempo real.</td><td>Zoom, Google Meet.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="st">Ponte a prueba</h3>
+    <div class="quiz" id="quiz" aria-live="polite"></div>
+  </div>
+</section>
+
+<!-- 8. CONCLUSIONES -->
+<section class="page" id="conclusiones" data-title="Conclusiones" hidden>
+  <div class="wrap">
+    <header class="page-head"><p class="kick">Reflexión personal</p><h2>Conclusiones</h2></header>
+    <figure class="illus"><svg viewBox="0 0 480 200" role="img" aria-label="Escalera ascendente que termina en una bandera"><use href="#il-concl"/></svg><figcaption>Paso a paso, hacia una mejor práctica docente</figcaption></figure>
+
+    <div class="grid3">
+      <div class="panel"><h4>Importancia de las TIC en la educación</h4><p>Las TIC son importantes porque amplían las posibilidades de aprender y de enseñar: facilitan el acceso a la información, hacen las clases más dinámicas y permiten atender mejor las distintas formas de aprender de los estudiantes. Para mí, como futura docente, son una herramienta para lograr clases más claras, participativas e inclusivas, siempre con un objetivo pedagógico claro.</p></div>
+      <div class="panel blue"><h4>Cómo mejorar la competencia digital docente</h4><p>Pienso practicar con regularidad las herramientas y plataformas educativas, participar en cursos y capacitaciones, explorar una herramienta nueva cada cierto tiempo y aprender de las experiencias de mis compañeros y docentes. También me propongo verificar siempre las fuentes de información y cuidar la seguridad de los datos personales.</p></div>
+      <div class="panel pro"><h4>Retos y oportunidades de la enseñanza con TIC</h4><p>Entre los retos están los problemas de conexión a Internet, la falta de equipos adecuados y los cambios constantes de la tecnología. Entre las oportunidades están la oferta de capacitaciones, los recursos gratuitos en línea y la posibilidad de preparar actividades más dinámicas. Con planificación y formación continua, los retos pueden convertirse en oportunidades.</p></div>
+    </div>
+
+    <h3 class="st">Referencias</h3>
+    <div class="prose">
+      <ul class="refs">
+        <li>Díaz Barriga Arceo, F., &amp; Hernández Rojas, G. (2002). <em>Estrategias docentes para un aprendizaje significativo: Una interpretación constructivista</em> (2.ª ed.). McGraw-Hill.</li>
+        <li>García Aretio, L. (2020). Bosque semántico: ¿Educación/enseñanza/aprendizaje a distancia, virtual, en línea, digital, eLearning…? <em>RIED. Revista Iberoamericana de Educación a Distancia, 23</em>(1). <a href="https://doi.org/10.5944/ried.23.1.25495" target="_blank" rel="noopener">https://doi.org/10.5944/ried.23.1.25495</a></li>
+        <li>Instituto Nacional de Tecnologías Educativas y de Formación del Profesorado. (2017). <em>Marco común de competencia digital docente</em>. Ministerio de Educación, Cultura y Deporte. <a href="https://aprende.intef.es/sites/default/files/2018-05/2017_1020_Marco-Com%C3%BAn-de-Competencia-Digital-Docente.pdf" target="_blank" rel="noopener">https://aprende.intef.es/sites/default/files/2018-05/2017_1020_Marco-Común-de-Competencia-Digital-Docente.pdf</a></li>
+        <li>López De La Cruz, E. C. I., &amp; Escobedo Bailón, F. E. (2021). Conectivismo, ¿un nuevo paradigma del aprendizaje? <em>Desafíos, 12</em>(1). <a href="https://doi.org/10.37711/desafios.2021.12.1.259" target="_blank" rel="noopener">https://doi.org/10.37711/desafios.2021.12.1.259</a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="stripe"></div>
+  <p>Universidad Estatal de Milagro<br>Componente Práctico 1, Educación 2019 (modalidad presencial)</p>
+</footer>
+
+<script>
+(function(){
+  var pages=[].slice.call(document.querySelectorAll('.page'));
+  var links=[].slice.call(document.querySelectorAll('#nav a'));
+  var ids=pages.map(function(p){return p.id});
+  var top=document.getElementById('top');
+  var menuBtn=document.getElementById('menuBtn');
+
+  function closeMenu(){top.classList.remove('open');menuBtn.setAttribute('aria-expanded','false')}
+  menuBtn.addEventListener('click',function(){
+    var open=top.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded',open?'true':'false');
+  });
+
+  function show(id,push){
+    if(ids.indexOf(id)<0) id='inicio';
+    pages.forEach(function(p){p.hidden=(p.id!==id)});
+    links.forEach(function(a){
+      if(a.getAttribute('data-go')===id) a.setAttribute('aria-current','page');
+      else a.removeAttribute('aria-current');
+    });
+    document.title=document.getElementById(id).getAttribute('data-title')+' | Aula Conectada';
+    closeMenu();
+    window.scrollTo(0,0);
+    if(push){try{history.replaceState(null,'','#'+id)}catch(e){}}
+  }
+  document.addEventListener('click',function(e){
+    var a=e.target.closest('[data-go]');
+    if(!a) return;
+    e.preventDefault();
+    show(a.getAttribute('data-go'),true);
+  });
+  window.addEventListener('hashchange',function(){show(location.hash.slice(1))});
+
+  // Anterior / siguiente al final de cada página
+  pages.forEach(function(p,i){
+    var prev=pages[i-1],next=pages[i+1];
+    var d=document.createElement('div');
+    d.className='pager';
+    d.innerHTML=(prev?'<a class="btn ghost" href="#'+prev.id+'" data-go="'+prev.id+'">Anterior: '+prev.getAttribute('data-title')+'</a>':'<span></span>')+
+                (next?'<a class="btn" href="#'+next.id+'" data-go="'+next.id+'">Siguiente: '+next.getAttribute('data-title')+'</a>':'');
+    p.querySelector('.wrap').appendChild(d);
+  });
+
+  // Banner con diapositivas
+  var slides=[].slice.call(document.querySelectorAll('.slide'));
+  var dots=[].slice.call(document.querySelectorAll('.dot'));
+  dots.forEach(function(d,k){
+    d.addEventListener('click',function(){
+      slides.forEach(function(s,j){s.classList.toggle('on',j===k);s.setAttribute('aria-hidden',j===k?'false':'true')});
+      dots.forEach(function(o,j){o.classList.toggle('on',j===k);o.setAttribute('aria-current',j===k?'true':'false')});
+    });
+  });
+
+  // Línea de tiempo interactiva
+  [].slice.call(document.querySelectorAll('[data-tl]')).forEach(function(tl){
+    var tabs=[].slice.call(tl.querySelectorAll('[role="tab"]'));
+    tabs.forEach(function(t){
+      t.addEventListener('click',function(){
+        tabs.forEach(function(o){
+          var on=(o===t);
+          o.setAttribute('aria-selected',on?'true':'false');
+          document.getElementById(o.getAttribute('aria-controls')).hidden=!on;
+        });
+      });
+    });
+  });
+
+  // Cuestionario (puedes editar las preguntas aquí)
+  var Q=[
+    {q:'¿Qué es un sistema de gestión del aprendizaje (LMS)?',
+     o:['Una plataforma que organiza cursos, actividades, evaluaciones y comunicación en línea','Un programa exclusivo para editar video','Una red social sin fines educativos'],
+     a:0,e:'Un LMS centraliza los contenidos y el seguimiento de un curso en un solo espacio digital.'},
+    {q:'¿Cuál de estas plataformas es un LMS de código abierto?',
+     o:['Zoom','Moodle','Canva'],
+     a:1,e:'Moodle es una plataforma de aprendizaje de código abierto muy usada en instituciones educativas.'},
+    {q:'La educación híbrida se caracteriza por:',
+     o:['Realizarse solo en el aula física','Basarse únicamente en materiales impresos','Combinar actividades presenciales con actividades en línea'],
+     a:2,e:'El formato híbrido mezcla encuentros presenciales con trabajo en entornos virtuales.'}
+  ];
+  var box=document.getElementById('quiz'),qi=0,score=0;
+  function render(){
+    if(qi>=Q.length){
+      box.innerHTML='<p class="q-end">Acertaste '+score+' de '+Q.length+'.</p><button class="btn ghost" id="qr" type="button">Intentar de nuevo</button>';
+      document.getElementById('qr').onclick=function(){qi=0;score=0;render()};
+      return;
+    }
+    var c=Q[qi];
+    box.innerHTML='<p class="q-n">Pregunta '+(qi+1)+' de '+Q.length+'</p><p class="q-t">'+c.q+'</p><div class="q-o">'+
+      c.o.map(function(t,k){return '<button type="button" class="q-opt" data-k="'+k+'">'+t+'</button>'}).join('')+
+      '</div><p class="q-fb"></p><div id="qn"></div>';
+    var opts=[].slice.call(box.querySelectorAll('.q-opt'));
+    opts.forEach(function(b){
+      b.addEventListener('click',function(){
+        var k=+b.getAttribute('data-k');
+        opts.forEach(function(o){o.disabled=true});
+        opts[c.a].classList.add('ok');
+        if(k===c.a){score++}else{b.classList.add('bad')}
+        box.querySelector('.q-fb').textContent=(k===c.a?'Correcto. ':'No es esa. ')+c.e;
+        document.getElementById('qn').innerHTML='<button class="btn" id="qnext" type="button">'+(qi===Q.length-1?'Ver resultado':'Siguiente pregunta')+'</button>';
+        document.getElementById('qnext').onclick=function(){qi++;render()};
+      });
+    });
+  }
+  render();
+
+  show(location.hash.slice(1));
+})();
+</script>
+</body>
+</html>
